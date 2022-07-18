@@ -1,10 +1,22 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/kakaologin">Kakao</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <Header />
+    <router-view/>
+    <Footer />
+  </div>
 </template>
+
+<script>
+  import Header from './layout/Header';
+  import Footer from './layout/Footer';
+
+  export default {
+    components: { Header, Footer },
+    computed: {
+
+    }
+  }
+</script>
 
 <style>
 #app {
