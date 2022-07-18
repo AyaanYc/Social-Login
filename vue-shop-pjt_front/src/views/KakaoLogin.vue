@@ -1,5 +1,6 @@
 <template>
   <div>
+      <div>{{ iuser }}</div>
       <a id="custom-login-btn" @click="kakaoLogin">
           <img src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" 
                width="222"
@@ -10,6 +11,16 @@
 
 <script>
 export default {
+    data() {
+        return {
+            
+        }
+    },
+    computed: {
+        iuser() {
+            return this.$store.state.iuser;
+        },
+    },
     methods: {
         kakaoLogin() {
             window.Kakao.Auth.login({
@@ -34,10 +45,9 @@ export default {
                         thumb_img: acc.profile.thumbnail_image_url
                     }
                     console.log(params);
-                    const data = await this.$api('/user/signup', params);
+                    const data = await this.$api('/user/signup', params);                       
                     console.log(data.result);
-
-                    alert('로그인 성공!')
+                    this.$store.commit('setState', data.result);                    
                 },
                 fail: e => {
                     console.error(e);
