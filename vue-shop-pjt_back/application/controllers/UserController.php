@@ -19,4 +19,6 @@ class UserController extends Controller {
         $this->flash(_LOGINUSER);
         return [_RESULT => 1];
     }
+
+    
 }

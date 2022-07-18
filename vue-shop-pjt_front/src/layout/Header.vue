@@ -82,7 +82,7 @@ export default {
             });
         },
         async login(params) {
-            const data = await this.$api('/user/signup', params);            
+            const data = await this.$post('/user/signup', params);            
             params.iuser = data.result;
             this.$store.commit('setUser', params);
         },
@@ -91,7 +91,7 @@ export default {
                 console.log(res);
                 this.$store.commit('setUser', {});
                 this.$router.push({path: '/'}) //option 선택사항
-                await this.$api('/user/logout');
+                await this.$post('/user/logout');
             })
         }
     }
