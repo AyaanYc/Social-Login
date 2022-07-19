@@ -20,7 +20,7 @@
                 <td>
                     <img v-if="product.path!=null" :src="`/download/${product.id}/${product.path}`" style="height:50px;width:auto;" />
                 </td>
-                <td>{{product.product_name}}</td>
+                <td><{{product.product_name}}</td>
                 <td>{{product.product_price}}</td>
                 <td>{{product.delivery_price}}</td>
                 <td>{{product.add_delivery_price}}</td>

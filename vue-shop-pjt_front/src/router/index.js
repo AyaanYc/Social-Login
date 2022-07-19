@@ -5,6 +5,17 @@ import ProductCreate from '../views/ProductCreate';
 import ProductUpdate from '../views/ProductUpdate';
 import SalesList from '../views/SalesList';
 import ImageInsert from '../views/ImageInsert';
+import store from '@/store'; //store/index.js
+import swal from 'sweetalert2';
+
+//네비게이션 가드
+const requireAuth = () => (to, from, next) => {
+  if(store.state.user.iuser === undefined) {
+    swal.fire('로그인을 하세요.', '', 'warning');
+    return;
+  }
+  return next();
+}
 
 const routes = [  
   {
@@ -20,7 +31,8 @@ const routes = [
   {
     path: '/create',
     name: 'ProductCreate',
-    component: ProductCreate
+    component: ProductCreate,
+    beforeEnter: requireAuth()
   },
   {
     path: '/update',
