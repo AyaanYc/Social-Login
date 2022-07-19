@@ -30,6 +30,6 @@ export default {
                 }
                 fr.readAsDataURL(file);
             });
-        },
+        }
     }
 };
