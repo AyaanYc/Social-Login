@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr v-for="(product, idx) in productList" :key="product.id">
-            <td><img src=""></td>
+            <td><img :src="`/static/img/${product.id}/1/${product.path}`"></td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.product_price }}</td>
             <td>{{ product.delivery_price }}</td>
@@ -48,7 +48,7 @@
 export default {
   data() {
     return {
-      productList: []
+      productList: [],
     }
   },
   methods: {
@@ -82,6 +82,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  img {
+    width: 60px;
+    border-radius: 50%;
+    height: 100%;
+  }
 </style>

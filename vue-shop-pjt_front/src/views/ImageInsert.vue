@@ -22,7 +22,7 @@
                 v-for="item in productImage.filter( c => c.type === 1 )">
                 <div class="position-relative">
                   <img :src="`/static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid">
-                  <div class="position-absolute top-0 end-0" style="cursor:pointer" @click="deleteImage(item.id, item.product_id, item.type);">X</div>
+                  <div class="position-absolute top-0 end-0" style="cursor:pointer" @click="deleteImage(item.id, item.product_id, item.type, item.path);">X</div>
                 </div>
             </div>
           </div>
@@ -51,7 +51,7 @@
                 } )">
                 <div class="position-relative">
                   <img :src="`/static/img/${item.product_id}/${item.type}/${item.path}`" class="img-fluid">
-                  <div class="position-absolute top-0 end-0" style="cursor:pointer" @click="deleteImage(item.id, item.product_id, item.type);">X</div>
+                  <div class="position-absolute top-0 end-0" style="cursor:pointer" @click="deleteImage(item.id, item.product_id, item.type, item.path);">X</div>
                 </div>
             </div>
           </div>
@@ -112,12 +112,13 @@ export default {
     return {      
       productName: '',
       productDetail: {},
-      productImage: []
+      productImage: [],
     }
   },
   created() {
     this.productDetail = this.$store.state.sallerSelectedProduct;
     this.getProductImage();
+    console.log(this.productDetail);
   },
   methods: {    
     async getProductImage() {
@@ -130,14 +131,16 @@ export default {
       const image = await this.$base64(files[0]);
       const formData = { image };
       console.log(formData);
-      const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}`, formData);//멤버필드명이 에러인것만 받기위해 {}
+      const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}/${this.productDetail.path}`, formData);//멤버필드명이 에러인것만 받기위해 {}
       console.log(error);
       this.getProductImage();
+      this.productDetail.path = this.productImage[(this.productImage.length)-1].path;
     },
 
     async deleteImage(id, product_id, type, path) {
       const del = await this.$delete(`/api/productImageDelete/${id}/${product_id}/${type}/${path}`);
       console.log(del, id, product_id, type, path);
+      this.productDetail.path = null;
       this.getProductImage();
     }
   }
