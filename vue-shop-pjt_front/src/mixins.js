@@ -30,6 +30,16 @@ export default {
                 }
                 fr.readAsDataURL(file);//파일정보를 url읽어줌
             });
-        }
+        },
+        async $delete(url) {
+          return (
+            await axios({
+              method: 'delete',
+              url,
+            }).catch((e) => {
+              console.error(e);
+            })
+          ).data;
+        },
     }
 };
