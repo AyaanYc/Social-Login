@@ -22,13 +22,13 @@ export default {
             })
           ).data;
         },
-        $base64(file) {
+        $base64(file) { //문자열형태로 바꿔줌 프로미스객체로
             return new Promise(resolve => {
-                const a = new FileReader();
+                const fr = new FileReader();
                 fr.onload = e => {
-                    resolve(e.target.result);
+                    resolve(e.target.result);//이미지의 문자열을 resolve로 보냄
                 }
-                fr.readAsDataURL(file);
+                fr.readAsDataURL(file);//파일정보를 url읽어줌
             });
         }
     }
