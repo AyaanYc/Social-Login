@@ -101,13 +101,13 @@ export default {
   data() {
     return {
       product: {
-        product_name: '',
-        product_price: 0,
-        delivery_price: 0,
-        add_delivery_price: 0,
-        tags: '',
-        outbound_days: 0,
-        category_id: '',
+        product_name: '컴퓨터',
+        product_price: 11200,
+        delivery_price: 3000,
+        add_delivery_price: 100,
+        tags: '#모니터',
+        outbound_days: 3,
+        category_id: '5',
         seller_id: 1
       },      
       categoryObj: {},    

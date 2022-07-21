@@ -112,7 +112,7 @@ export default {
     return {      
       productName: '',
       productDetail: {},
-      productImage: [],
+      productImage: ['1'],
     }
   },
   created() {
@@ -123,7 +123,6 @@ export default {
   methods: {    
     async getProductImage() {
       this.productImage = await this.$get(`/api/productImageList/${this.productDetail.id}`);
-      console.log(this.productImage);
     },
 
     async uploadFile(files, type) {
@@ -132,9 +131,11 @@ export default {
       const formData = { image };
       console.log(formData);
       const { error } = await this.$post(`/api/upload/${this.productDetail.id}/${type}/${this.productDetail.path}`, formData);//멤버필드명이 에러인것만 받기위해 {}
-      console.log(error);
+      // console.log(error);
+      console.log(this.productDetail);
       this.getProductImage();
-      this.productDetail.path = this.productImage[(this.productImage.length)-1].path;
+      console.log(this.productImage);
+      this.productDetail.path = this.productImage.length>0 ? this.productImage[(this.productImage.length)-1].path : 1;
     },
 
     async deleteImage(id, product_id, type, path) {

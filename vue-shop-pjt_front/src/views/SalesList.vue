@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr v-for="(product, idx) in productList" :key="product.id">
-            <td><img :src="`/static/img/${product.id}/1/${product.path}`"></td>
+            <td><img v-if="product.path !== null" :src="`/static/img/${product.id}/1/${product.path}`"></td>
             <td>{{ product.product_name }}</td>
             <td>{{ product.product_price }}</td>
             <td>{{ product.delivery_price }}</td>
@@ -68,7 +68,7 @@ export default {
                 cancelButtonText: `취소`
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    const result = await this.$post('/api/delProduct', id)
+                    const result = await this.$get(`/api/delProduct/${id}`)
                     console.log(result);
                     this.getProductList();
                     this.$swal.fire('삭제되었습니다!', '', 'success');
@@ -83,9 +83,17 @@ export default {
 </script>
 
 <style scoped>
+  td:first-child {
+    position:relative;
+    width: 100px;
+  }
   img {
-    width: 60px;
+    position:absolute;
+    width: 100px;
+    max-width:100%; max-height:100%;
+    width:auto; height:auto;
+    margin: auto;
+    top:0; bottom:0; left:0; right:0;
     border-radius: 50%;
-    height: 100%;
   }
 </style>
