@@ -21,10 +21,10 @@
         <tbody>
           <tr v-for="(product, idx) in productList" :key="product.id">
             <td><img v-if="product.path !== null" :src="`/static/img/${product.id}/1/${product.path}`"></td>
-            <td>{{ product.product_name }}</td>
-            <td>{{ product.product_price }}</td>
-            <td>{{ product.delivery_price }}</td>
-            <td>{{ product.add_delivery_price }}</td>
+            <td><span>{{ product.product_name }}</span></td>
+            <td><span>{{ product.product_price }}</span></td>
+            <td><span>{{ product.delivery_price }}</span></td>
+            <td><span>{{ product.add_delivery_price }}</span></td>
             <td>
               <!--
               <router-link class="nav-link" :to="{ path: '/image_insert', query: {product_id: product.id} }">
@@ -89,11 +89,10 @@ export default {
   }
   img {
     position:absolute;
-    width: 100px;
     max-width:100%; max-height:100%;
     width:auto; height:auto;
     margin: auto;
     top:0; bottom:0; left:0; right:0;
-    border-radius: 50%;
+    padding: 10px;
   }
 </style>

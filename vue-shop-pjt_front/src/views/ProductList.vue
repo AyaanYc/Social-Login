@@ -4,11 +4,25 @@
     <div class="container">
       <div class="row mb-2">
         <div class="col-12">
-          <select name="" id="" class="form-select">
-            <option selected>---</option>
-            <option value="1">노트북</option>
-            <option value="2">모니터</option>
-            <option value="3">마우스/키보드</option>
+          <select calss="form-select" @change="changeCate1" v-model="selectedCate1">
+            <option value="" selected>전체</option>
+            <option v-for="item in cate1List" :key="item.cate_nm">
+              {{ item.cate_nm }}
+            </option>
+          </select>
+
+          <select calss="form-select" @change="changeCate2" v-model="selectedCate2" v-if="selectedCate1 !== ''">
+            <option value="" selected>전체</option>
+            <option v-for="item in cate2List" :key="item.cate_nm">
+              {{ item.cate_nm }}
+            </option>
+          </select>
+
+          <select calss="form-select" @change="getProductList" v-model="selectedCate3" v-if="selectedCate2 !== ''">
+            <option value="0" selected>전체</option>
+            <option v-for="item in cate3List" :key="item.id" :value="item.id">
+              {{ item.cate_nm }}
+            </option>
           </select>
         </div>
       </div>
@@ -44,16 +58,67 @@
 export default {
   data() {
     return {
-      productList: []
+      productList: [],
+      cate1List: [],
+      cate2List: [],
+      cate3List: [],
+      selectedCate1: '',
+      selectedCate2: '',
+      selectedCate3: 0,
     }
   },
   methods: {
-    async getProductList() {
-      this.productList = await this.$get('/api/productList', {})
+   changeCate1() {
+      this.selectedCate2 = '';
+      this.selectedCate3 = 0;
+      this.cate2List = [];
+      this.cate3List = [];
+      this.getCate2List(this.selectedCate1);
+      this.getProductList();
+    },
+    changeCate2() {
+      this.selectedCate3 = 0;
+      this.cate3List = [];
+      this.getCate3List(this.selectedCate1, this.selectedCate2);
+      this.getProductList();
+    },
+    
+    async getProductList() {      
+      const param = {};
+      if(this.selectedCate3 > 0) {
+        param['cate3'] = this.selectedCate3;
+      } else {
+        if(this.selectedCate1 !== '') {
+          param['cate1'] = this.selectedCate1;
+        }
+        if(this.selectedCate2 !== '') {
+          param['cate2'] = this.selectedCate2;
+        }
+      }      
+      this.productList = await this.$get('/api/productList', param);
+    },
+    async getCate1List() {
+      this.cate1List = await this.$get('/api/cate1List', {});
+    },
+    async getCate2List(cate1) {
+      this.cate2List = await this.$get(`/api/cate2List/${cate1}`, {});
+    },
+    async getCate3List(cate1, cate2) {
+      this.cate3List = await this.$get(`/api/cate3List/${cate1}/${cate2}`, {});
     }
   },
   created() {
     this.getProductList();
+    this.getCate1List();
   }
 }
 </script>
+<style scoped>
+  img {
+    width: 200px;
+    height: 200px;
+  }
+  .card {
+    margin: 20px;
+  }
+</style>>
