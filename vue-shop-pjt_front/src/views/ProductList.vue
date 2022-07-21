@@ -68,7 +68,7 @@ export default {
     }
   },
   methods: {
-   changeCate1() {
+    changeCate1() {
       this.selectedCate2 = '';
       this.selectedCate3 = 0;
       this.cate2List = [];
