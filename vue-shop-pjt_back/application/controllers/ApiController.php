@@ -1,5 +1,6 @@
 <?php
 namespace application\controllers;
+use Exception;
 
 class ApiController extends Controller{
   public function categoryList(){
@@ -12,14 +13,78 @@ class ApiController extends Controller{
     return [_RESULT => $this->model->productInsert($json)];
   }
 
+  public function productList() {
+    $param = [];
+
+    if(isset($_GET["cate3"])) {
+        $cate3 = intval($_GET["cate3"]);
+        if($cate3 > 0) {
+            $param["cate3"] = $cate3;
+        }
+    } else {
+        if(isset($_GET["cate1"])) {
+            $param["cate1"] = $_GET["cate1"];
+        }
+        if(isset($_GET["cate2"])) {
+            $param["cate2"] = $_GET["cate2"];
+        }
+    }                 
+    return $this->model->productList($param);         
+  }
+
   public function productList2() {
-    $result = $this->model->productList2();
-    return $result === false ? [] : $result;
+    return $this->model->productList2();
+  }
+
+  public function cate1List() {
+    return $this->model->cate1List();
+  }
+
+  public function cate2List() {
+    $urlPaths = getUrlPaths();
+    if(count($urlPaths) !== 3) {
+        exit();
+    }        
+    $param = [ "cate1" => $urlPaths[2] ];
+    return $this->model->cate2List($param);
+  }
+
+  public function cate3List() {
+    $urlPaths = getUrlPaths();
+    if(count($urlPaths) !== 4) {
+        exit();
+    }        
+    $param = [ 
+        "cate1" => $urlPaths[2], 
+        "cate2" => $urlPaths[3]
+    ];
+    return $this->model->cate3List($param);
   }
 
   public function delProduct() {
-    $json = getJson();
-    return [_RESULT => $this->model->delProduct($json)];
+    $urlPaths = getUrlPaths();//주소값을 / 단위로 쪼갬
+    if(count($urlPaths) !== 3){
+      exit();
+    }
+    try {
+      $id = $urlPaths[2];
+      $this->model->beginTransaction();
+      $this->model->delProductImg($id);
+      $result =  $this->model->delProduct($id);
+      if($result === 1) {
+          //이미지 삭제
+          $dirPath = _IMG_PATH . "/" . $id;
+          rmdirAll($dirPath);   
+          $this->model->commit();
+      } else {
+          $this->model->rollback();    
+      }
+    } catch(Exception $e) {
+        print "에러발생<br>";
+        print $e . "<br>";
+        $this->model->rollback();
+    }    
+    return [_RESULT => $result];
   }
 
   public function productDetail() {
@@ -48,8 +113,12 @@ class ApiController extends Controller{
     $dirPath = _IMG_PATH . "/" . $productId . "/" . $type; //이미지폴더경로
     $fileNm = uniqid() . "." . $image_type;
     $filePath = $dirPath . "/" . $fileNm; //이미지경로파일
+    $dirPath1 =  _IMG_PATH . "/" . $productId . "/" . "1";
+    if(intval($urlPaths[3]) === 1 && $urlPaths[4] !== "null"){
+      rmdir_all($dirPath1);
+    }
     if(!is_dir($dirPath)) {
-        mkdir($dirPath, 0777, true);//이미지폴더경로에 폴더를만들어줌
+      mkdir($dirPath, 0777, true);
     }
     $result = file_put_contents($filePath, $image_base64); //파일경로이름에 파일을 넣어줌
     if($result){
@@ -58,7 +127,11 @@ class ApiController extends Controller{
         "type" => $type,
         "path" => $fileNm
       ];
-      $this->model->productImageInsert($param);
+      if(intval($urlPaths[3]) === 1 && $urlPaths[4] !== "null"){
+        $this->model->productImageUpdate($param);
+      } else{
+        $this->model->productImageInsert($param);
+      }
       return [_RESULT => 1];
     }
   }
