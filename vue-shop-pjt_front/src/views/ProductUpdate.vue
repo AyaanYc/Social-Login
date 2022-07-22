@@ -77,7 +77,7 @@
           <button type="button" class="btn btn-lg btn-dark" @click="goToList">취소하기</button>
         </div>
         <div class="col-6 d-grid p-1">
-          <button type="button" class="btn btn-lg btn-danger">저장하기</button>
+          <button type="button" class="btn btn-lg btn-danger" @click="productUpdate">저장하기</button>
         </div>
       </div>
     </div>
@@ -115,7 +115,21 @@ export default {
       this.productDetail = productDetail;
       console.log(this.productDetail);
     },
-    
+    productUpdate() {
+      this.$swal.fire({
+        title: '정말 수정 하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '등록',
+        cancelButtonText: '취소',
+      }).then(async result => {
+        if(result.isConfirmed) {
+          const res = this.$post('/api/productUpdate', this.productDetail)
+          console.log(res);
+          this.$swal.fire('수정되었습니다.', '', 'success')
+          this.$router.push( {path: '/sales'} );
+        }
+      });
+    }   
   }
 }
 </script>
