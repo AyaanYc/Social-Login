@@ -169,4 +169,17 @@ class ApiController extends Controller{
     }
     return [_RESULT => $result];
   }
+  
+  // public function productMainImages() {
+  //   $urlPaths = getUrlPaths();
+
+  //   $result = $this->model->productMainImages($param);
+    
+  // }
+
+  public function productUpdate() {
+    $json = getJson();
+    print_r($json);
+    return [_RESULT => $this->model->productUpdate($json)];
+  }
 }
