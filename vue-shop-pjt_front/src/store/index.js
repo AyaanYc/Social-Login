@@ -9,7 +9,7 @@ export default createStore({
     }
   },
   mutations: {
-    user: (state, data) => {
+    setUser: (state, data) => {
       state.user = data;
     },
     sallerSelectedProduct: (state, data) => {

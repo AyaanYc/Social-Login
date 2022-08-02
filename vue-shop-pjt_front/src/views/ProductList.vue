@@ -4,21 +4,21 @@
     <div class="container">
       <div class="row mb-2">
         <div class="col-12">
-          <select calss="form-select" @change="changeCate1" v-model="selectedCate1">
+          <select class="form-select" @change="changeCate1" v-model="selectedCate1">
             <option value="" selected>전체</option>
             <option v-for="item in cate1List" :key="item.cate_nm">
               {{ item.cate_nm }}
             </option>
           </select>
 
-          <select calss="form-select" @change="changeCate2" v-model="selectedCate2" v-if="selectedCate1 !== ''">
+          <select class="form-select" @change="changeCate2" v-model="selectedCate2" v-if="selectedCate1 !== ''">
             <option value="" selected>전체</option>
             <option v-for="item in cate2List" :key="item.cate_nm">
               {{ item.cate_nm }}
             </option>
           </select>
 
-          <select calss="form-select" @change="getProductList" v-model="selectedCate3" v-if="selectedCate2 !== ''">
+          <select class="form-select" @change="getProductList" v-model="selectedCate3" v-if="selectedCate2 !== ''">
             <option value="0" selected>전체</option>
             <option v-for="item in cate3List" :key="item.id" :value="item.id">
               {{ item.cate_nm }}

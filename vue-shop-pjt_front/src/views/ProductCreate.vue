@@ -102,11 +102,11 @@ export default {
     return {
       product: {
         product_name: '',
-        product_price: 11000,
-        delivery_price: 3000,
-        add_delivery_price: 1000,
-        tags: '#모니터',
-        outbound_days: 3,
+        product_price: 0,
+        delivery_price: 0,
+        add_delivery_price: 0,
+        tags: '',
+        outbound_days: 0,
         category_id: '',
         seller_id: 1
       },      
