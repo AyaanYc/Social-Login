@@ -90,7 +90,7 @@ export default {
       productImage: [],
       total: 1,
       totalPrice: 0
-    };
+    }; 
   },
   created() {
     this.productId = this.$route.query.product_id;
